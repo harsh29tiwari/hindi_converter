@@ -2,5 +2,6 @@
   "name": "hindi-converter-backend",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Backend proxy for Hindi Converter — keeps the Gemini API key secret."
 }
