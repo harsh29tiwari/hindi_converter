@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>शुद्ध हिंदी परिवर्तक</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+
+    /* Header */
+    .header {
+      background: rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,140,0,0.3);
+      padding: 20px 24px;
+      backdrop-filter: blur(10px);
+    }
+    .header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .logo {
+      width: 46px; height: 46px;
+      background: linear-gradient(135deg, #ff8c00, #ff6b00);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      font-family: 'Noto Sans Devanagari', 'Mangal', serif;
+      box-shadow: 0 4px 15px rgba(255,140,0,0.4);
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-size: 22px; font-weight: 700; letter-spacing: 0.3px;
+      font-family: 'Noto Sans Devanagari', 'Mangal', serif;
+    }
+    .header p {
+      color: rgba(255,200,100,0.8); font-size: 13px; margin-top: 2px;
+    }
+
+    /* Main */
+    .main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    /* Info banner */
+    .banner {
+      background: rgba(255,140,0,0.08);
+      border: 1px solid rgba(255,140,0,0.25);
+      border-radius: 12px;
+      padding: 12px 18px;
+      margin-bottom: 24px;
+      color: rgba(255,220,150,0.9);
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+    .banner strong { color: #ffd070; }
+
+    /* Labels */
+    .field-label {
+      display: block;
+      color: rgba(255,220,150,0.85);
+      font-size: 12px; font-weight: 600;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* Textarea */
+    textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 16px;
+      color: #fff;
+      font-size: 16px;
+      line-height: 1.7;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+    textarea:focus { border-color: rgba(255,140,0,0.6); }
+    textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+    .hint {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      margin-top: 5px;
+      text-align: right;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin: 16px 0 24px;
+    }
+    .btn-convert {
+      flex: 1;
+      padding: 14px 24px;
+      background: linear-gradient(135deg, #ff8c00, #e65c00);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 20px rgba(255,140,0,0.4);
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-convert:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(255,140,0,0.5);
+    }
+    .btn-convert:disabled {
+      background: rgba(255,140,0,0.2);
+      color: rgba(255,255,255,0.4);
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-clear {
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-clear:hover:not(:disabled) { background: rgba(255,255,255,0.12); }
+    .btn-clear:disabled { cursor: not-allowed; opacity: 0.4; }
+
+    /* Spinner */
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Error */
+    .error-box {
+      background: rgba(220,50,50,0.12);
+      border: 1px solid rgba(220,50,50,0.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #ff8a8a;
+      font-size: 14px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    /* Output */
+    .output-section { display: none; }
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .btn-copy {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 6px 14px;
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-copy.copied {
+      background: rgba(80,200,120,0.2);
+      border-color: rgba(80,200,120,0.4);
+      color: #7fde9f;
+    }
+    .output-box {
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(255,140,0,0.25);
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 120px;
+      font-size: 20px;
+      line-height: 2;
+      font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', serif;
+      letter-spacing: 0.3px;
+      user-select: text;
+      color: #fff;
+      word-break: break-word;
+    }
+    .output-box.placeholder-text {
+      color: rgba(255,200,100,0.5);
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+    }
+    .output-meta {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.35);
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* Examples */
+    .examples-grid {
+      margin-top: 36px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 560px) {
+      .examples-grid { grid-template-columns: 1fr; }
+      .output-meta { flex-direction: column; gap: 6px; }
+    }
+    .example-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .example-card:hover { border-color: rgba(255,140,0,0.35); background: rgba(255,140,0,0.05); }
+    .example-en { color: rgba(255,255,255,0.55); font-size: 12.5px; margin-bottom: 5px; }
+    .example-hi {
+      color: rgba(255,200,100,0.8);
+      font-size: 14px;
+      font-family: 'Noto Sans Devanagari', 'Mangal', serif;
+      line-height: 1.8;
+    }
+    .example-hint { color: rgba(255,140,0,0.5); font-size: 11px; margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo">अ</div>
+      <div>
+        <h1>शुद्ध हिंदी परिवर्तक</h1>
+        <p>Shuddh Hindi Converter — for official documents &amp; letters</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="banner">
+      💡 <strong>English</strong>, <strong>Hinglish</strong>, या <strong>mixed Hindi</strong> में टाइप करें — यह स्वतः <strong>शुद्ध हिंदी</strong> (Mangal/Devanagari) में बदल जाएगा, जो सरकारी पत्रों और दस्तावेज़ों के लिए तैयार होगा।
+    </div>
+
+    <div>
+      <label class="field-label">Input — English / Hinglish / Mixed</label>
+      <textarea id="inputText" rows="6"
+        placeholder="यहाँ लिखें... जैसे: 'Please find attached the required documents' या 'mujhe aapko batana tha ki meeting kal hogi'"></textarea>
+      <div class="hint">Ctrl + Enter से परिवर्तित करें</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-convert" id="convertBtn" onclick="convert()">
+        🔄 हिंदी में परिवर्तित करें
+      </button>
+      <button class="btn-clear" id="clearBtn" onclick="clearAll()" disabled>
+        🗑 साफ करें
+      </button>
+    </div>
+
+    <div class="error-box" id="errorBox"></div>
+
+    <div class="output-section" id="outputSection">
+      <div class="output-header">
+        <label class="field-label" style="margin-bottom:0">शुद्ध हिंदी — Output (Mangal / Devanagari)</label>
+        <button class="btn-copy" id="copyBtn" onclick="copyOutput()">📋 कॉपी करें</button>
+      </div>
+      <div class="output-box" id="outputBox"></div>
+      <div class="output-meta" id="outputMeta" style="display:none">
+        <span>Font: Mangal / Noto Sans Devanagari</span>
+        <span>Script: Unicode Devanagari</span>
+        <span>Ready to paste in Word / email</span>
+      </div>
+    </div>
+
+    <div class="examples-grid">
+      <div class="example-card" onclick="useExample(this)">
+        <div class="example-en">Please find attached the documents for review.</div>
+        <div class="example-hi">कृपया समीक्षा हेतु दस्तावेज़ संलग्न पाएं।</div>
+        <div class="example-hint">↑ क्लिक करें इसे आज़माने के लिए</div>
+      </div>
+      <div class="example-card" onclick="useExample(this)">
+        <div class="example-en">The meeting has been postponed to tomorrow.</div>
+        <div class="example-hi">बैठक कल तक स्थगित कर दी गई है।</div>
+        <div class="example-hint">↑ क्लिक करें इसे आज़माने के लिए</div>
+      </div>
+      <div class="example-card" onclick="useExample(this)">
+        <div class="example-en">mujhe office se letter aaya hai</div>
+        <div class="example-hi">मुझे कार्यालय से पत्र आया है।</div>
+        <div class="example-hint">↑ क्लिक करें इसे आज़माने के लिए</div>
+      </div>
+      <div class="example-card" onclick="useExample(this)">
+        <div class="example-en">I request you to kindly approve my leave.</div>
+        <div class="example-hi">मैं आपसे विनम्र निवेदन करता हूँ कि मेरा अवकाश स्वीकृत करें।</div>
+        <div class="example-hint">↑ क्लिक करें इसे आज़माने के लिए</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const inputEl   = document.getElementById('inputText');
+    const convertBtn = document.getElementById('convertBtn');
+    const clearBtn   = document.getElementById('clearBtn');
+    const errorBox   = document.getElementById('errorBox');
+    const outputSection = document.getElementById('outputSection');
+    const outputBox  = document.getElementById('outputBox');
+    const outputMeta = document.getElementById('outputMeta');
+    const copyBtn    = document.getElementById('copyBtn');
+
+    // Enable/disable clear button based on content
+    inputEl.addEventListener('input', () => {
+      clearBtn.disabled = !inputEl.value.trim();
+    });
+
+    // Ctrl+Enter shortcut
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Enter') convert();
+    });
+
+    // IMPORTANT: This points to YOUR backend proxy, not Gemini directly.
+    // Replace this with your deployed backend URL (see README for setup steps).
+    const BACKEND_URL = "https://YOUR-BACKEND-URL.vercel.app/api/convert";
+
+    async function convert() {
+      const text = inputEl.value.trim();
+      if (!text) return;
+
+      // UI: loading state
+      convertBtn.disabled = true;
+      convertBtn.innerHTML = '<span class="spinner"></span> परिवर्तित हो रहा है...';
+      errorBox.style.display = 'none';
+      outputSection.style.display = 'block';
+      outputBox.className = 'output-box placeholder-text';
+      outputBox.textContent = 'रूपांतरण हो रहा है…';
+      outputMeta.style.display = 'none';
+      copyBtn.style.display = 'none';
+
+      try {
+        const response = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ text })
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error ${response.status}`);
+        }
+
+        const data = await response.json();
+        const output = (data.output || "").trim();
+
+        if (output) {
+          outputBox.className = "output-box";
+          outputBox.textContent = output;
+          outputMeta.style.display = "flex";
+          copyBtn.style.display = "inline-block";
+        } else {
+          throw new Error("No output received.");
+        }
+      } catch (err) {
+        showError('नेटवर्क त्रुटि। कृपया इंटरनेट जांचें और पुनः प्रयास करें।');
+        outputSection.style.display = 'none';
+      } finally {
+        convertBtn.disabled = false;
+        convertBtn.innerHTML = '🔄 हिंदी में परिवर्तित करें';
+      }
+    }
+
+    function showError(msg) {
+      errorBox.textContent = '⚠️ ' + msg;
+      errorBox.style.display = 'block';
+    }
+
+    function clearAll() {
+      inputEl.value = '';
+      outputSection.style.display = 'none';
+      errorBox.style.display = 'none';
+      outputBox.textContent = '';
+      clearBtn.disabled = true;
+      copyBtn.className = 'btn-copy';
+      copyBtn.textContent = '📋 कॉपी करें';
+    }
+
+    function copyOutput() {
+      const text = outputBox.textContent;
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.className = 'btn-copy copied';
+        copyBtn.textContent = '✓ कॉपी हो गया!';
+        setTimeout(() => {
+          copyBtn.className = 'btn-copy';
+          copyBtn.textContent = '📋 कॉपी करें';
+        }, 2000);
+      }).catch(() => {
+        // Fallback for older browsers
+        const range = document.createRange();
+        range.selectNode(outputBox);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        copyBtn.className = 'btn-copy copied';
+        copyBtn.textContent = '✓ कॉपी हो गया!';
+        setTimeout(() => {
+          copyBtn.className = 'btn-copy';
+          copyBtn.textContent = '📋 कॉपी करें';
+        }, 2000);
+      });
+    }
+
+    function useExample(card) {
+      const en = card.querySelector('.example-en').textContent;
+      inputEl.value = en;
+      clearBtn.disabled = false;
+      inputEl.focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
